@@ -19,5 +19,14 @@ jobs:
 
     - name: Build and Push
       run: |
-        docker build -t maliktrp/next-js-starter-repository:latest .
-        docker push maliktrp/next-js-starter-repository:latest
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/next-js-starter-repository:latest .
+        docker push ${{ secrets.DOCKER_USERNAME }}/next-js-starter-repository:latest
+        
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        
+    - name: Update Container App Revision
+      run: |
+        az containerapp update --name next-js-starter-app --resource-group next-js-starter-app-group --image docker.io/${{ secrets.DOCKER_USERNAME }}/next-js-starter-repository:latest
