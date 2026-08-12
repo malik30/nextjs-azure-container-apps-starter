@@ -1,6 +1,7 @@
 import { people } from '../data'
 
 export default function personHandler({ query: { id } }, res) {
+  console.log('Person api called', id, res.status);
   const filtered = people.filter((p) => p.id === id)
 
   // User with id exists
